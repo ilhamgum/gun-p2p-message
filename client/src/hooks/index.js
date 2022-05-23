@@ -1,12 +1,14 @@
 import { user, gun, SEA } from "./useGun";
 
 // hooks
+// register
 function createUser(username, password) {
   user.create(username, password, (ack) => {
     console.log(ack);
   });
 }
 
+// login
 function authUser(username, password) {
   user.auth(username, password, (ack) => {
     console.log("logged in, public key:", ack.get);
