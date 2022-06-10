@@ -10,7 +10,7 @@ export default function Friends() {
   const [isClicked, setClicked] = React.useState(false);
 
   React.useEffect(() => {
-    async function getFriendsAndMessages() {
+    async function getFriends() {
       // get all data in friends graph
       await user
         .get("friends")
@@ -19,20 +19,6 @@ export default function Friends() {
           // get original graph to retrieve alias
           gun.get(data).once((ack) => {
             setFriends((old) => [...old, ack]);
-            //   // on click get the data and display it
-            //   html.on("click", async () => {
-            //     // take the ack.pub value
-            //     receiver = await ack.pub;
-            //     $("#content").append(`
-            //       <div id="room">
-            //         <p id="userAlias">alias: ${ack.alias}</p>
-            //         <p id="userPub">pubkey: ${ack.pub}</p>
-            //         <div id="chats" style="width: 50%">
-            //         </div>
-            //         <input id="message" placeholder="insert a messsage"/>
-            //         <button onClick="sendMessage()">Send</button>
-            //       </div>
-            //     `);
             //     // get messages (credits: https://github.com/fireship-io/gun-chat with some changes)
             //     var match = {
             //       // lexical queries are kind of like a limited RegEx or Glob.
@@ -80,14 +66,8 @@ export default function Friends() {
           });
         });
     }
-    getFriendsAndMessages();
+    getFriends();
   }, []);
-
-  async function getMessages(data) {
-    console.log(data);
-    setSelected(data);
-    setClicked(true)
-  }
   return (
     <div>
       <p>Friends</p>
@@ -96,12 +76,19 @@ export default function Friends() {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           key={e.pub}
-          onClick={() => getMessages(e)}
+          onClick={() => {
+            setSelected(e);
+            setClicked(true);
+          }}
         >
           {e.alias}
         </button>
       ))}
-      {isClicked ? <Chat pub={selected.pub} alias={selected.alias} /> : <p>add and click friends to start chatting</p>}
+      {isClicked ? (
+        <Chat pub={selected.pub} alias={selected.alias} />
+      ) : (
+        <p>add and click friends to start chatting</p>
+      )}
     </div>
   );
 }
