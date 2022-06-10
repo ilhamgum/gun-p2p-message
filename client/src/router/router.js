@@ -1,31 +1,24 @@
-import React, { useContext } from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// contexts
-import AuthContext from "../contexts/context";
+import { user } from "../useGun";
 
 // route elements (pages)
-import LandingPage from "../pages/LandingPage";
-import Try from "../pages/Try";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
-import Homepage from "../pages/Homepage";
-
-import { user } from "../hooks";
+const LandingPage = lazy(() => import("../pages/LandingPage"));
+const SignIn = lazy(() => import("../pages/SignIn"));
+const SignUp = lazy(() => import("../pages/SignUp"));
+const Homepage = lazy(() => import("../pages/Homepage"));
 
 export default function Router() {
-  const { auth } = useContext(AuthContext);
-  console.log(auth);
-
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={user.is ? <Homepage /> : <LandingPage />} />
-        <Route path="/try" element={<Try />} />
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/register" element={<SignUp />} />
-        <Route path="*" element={<p>not found</p>} />
-      </Routes>
+      <Suspense fallback={<>Loading... </>}>
+        <Routes>
+          <Route path="/" element={user.is ? <Homepage /> : <LandingPage />} />
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/register" element={<SignUp />} />
+          <Route path="*" element={<p>not found</p>} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
