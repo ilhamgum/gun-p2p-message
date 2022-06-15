@@ -16,6 +16,7 @@ export default function Router() {
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
+          {/* conditional rendering */}
           <Route path="/" element={user.is ? <Homepage /> : <LandingPage />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
