@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { gun, user } from "../useGun";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SignUp() {
   // states
@@ -26,42 +27,60 @@ export default function SignUp() {
 
         // double check if user already exist
         if (exist === true) {
-          console.log("dah ada");
+          toast.error("user already exist in graph");
         } else {
           gun.get("userlist").set(setData);
-          console.log(ack);
           navigate("/login");
         }
       } else if (ack.err) {
-        console.log(ack.err);
+        toast.error(ack.err);
       }
     });
   }
 
   return (
-    <div>
-      <p>SignUp</p>
-      <input
-        type="text"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-        placeholder="Enter username"
-      ></input>
-      <input
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        placeholder="Enter password"
-      ></input>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="button"
-        onClick={register}
-      >
-        Register
-      </button>
-      <Link to="/login">Have an account</Link>
-      <Link to="/">Home</Link>
-    </div>
+    <>
+      <div className="w-screen h-screen flex flex-col justify-center items-center">
+        <div className="text-center -mt-24">
+          <p className="text-4xl">register</p>
+          <div className="flex flex-col place-items-center mt-3 ">
+            <input
+              className="w-80 h-14 mt-3 rounded-full text-center"
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+              placeholder="enter username"
+            ></input>
+            <input
+              className="w-80 h-14 mt-3 rounded-full text-center"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              placeholder="enter password"
+            ></input>
+            <button
+              className="w-80 h-14 mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={register}
+            >
+              sign me up!
+            </button>
+            <Toaster />
+          </div>
+          <p className="mt-8">
+            i have an account
+            <Link to="/login">
+              <span className="text-blue-500 hover:text-blue-800"> login</span>
+            </Link>
+          </p>
+          <p>or</p>
+          <p>
+            <Link to="/">
+              <span className="text-blue-500 hover:text-blue-800">go home</span>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
