@@ -14,7 +14,8 @@ export default function SignIn() {
     await user.auth(username, password, async (ack) => {
       // not error
       if (!ack.err) {
-        console.log(await user.is.pub)
+        console.log(ack)
+        console.log(await user.is)
         navigate("/");
         window.location.reload();
       }
@@ -22,29 +23,47 @@ export default function SignIn() {
   }
 
   return (
-    <div>
-      <p>SignIn</p>
-      <input
-        type="text"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-        placeholder="Enter username"
-      ></input>
-      <input
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        placeholder="Enter password"
-      ></input>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="button"
-        onClick={login}
-      >
-        Login
-      </button>
-      <Link to="/register">Create account</Link>
-      <Link to="/">Home</Link>
-    </div>
+    <>
+      <div className="w-screen h-screen flex flex-col justify-center items-center">
+        <div className="text-center -mt-24">
+          <p className="text-4xl">sign in</p>
+          <div className="flex flex-col place-items-center mt-3 ">
+            <input
+              className="w-80 h-14 mt-3 rounded-full text-center"
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+              placeholder="enter username"
+            ></input>
+            <input
+              className="w-80 h-14 mt-3 rounded-full text-center"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              placeholder="enter password"
+            ></input>
+            <button
+              className="w-80 h-14 mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={login}
+            >
+              login
+            </button>
+          </div>
+          <p className="mt-8">
+            don't have an accout?
+            <Link to="/register">
+              <span className="text-blue-500 hover:text-blue-800"> create account </span>
+            </Link>
+          </p>
+          <p>or</p>
+          <p>
+            <Link to="/">
+              <span className="text-blue-500 hover:text-blue-800">go home</span>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
   );
 }

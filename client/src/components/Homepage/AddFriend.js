@@ -46,8 +46,7 @@ export default function AddFriend() {
     }
   }
   return (
-    <div>
-      <label htmlFor="pub">public address</label>
+    <div className="w-full">
       <input
         type="text"
         onChange={(e) => setInput(e.target.value)}
@@ -59,7 +58,7 @@ export default function AddFriend() {
         type="button"
         onClick={addFriend}
       >
-        addFriend
+        add
       </button>
     </div>
   );
