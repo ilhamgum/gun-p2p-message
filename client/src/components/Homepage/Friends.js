@@ -30,18 +30,19 @@ export default function Friends() {
     <div className="flex flex-col divide-y">
       {friends.map((e) => (
         <div
-          className="hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
+          className="hover:bg-blue-100/50 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
           key={e.pub}
           onClick={() => {
             setSelected(e);
           }}
         >
-          <div className="flex items-center border-2">
+          <div className="flex items-center">
             <img
-              className="inline-block h-10 w-10 rounded-full ring-2 ring-white bg-white mr-2"
+              className="inline-block h-14 w-14 rounded-full ring-2 ring-slate-100 bg-white mr-4"
               src={`https://avatars.dicebear.com/api/avataaars/${e.alias}.svg`}
+              alt=""
             />
-            <p className="text-black">{e.alias}</p>
+            <p className="text-black text-xl">{e.alias}</p>
           </div>
         </div>
       ))}

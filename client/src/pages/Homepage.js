@@ -10,23 +10,26 @@ export default function Homepage() {
   return (
     <>
       <div className="w-screen h-screen">
-        <div className="border-blue-800">
-          <div className="p-4">
-            <Profile />
+        <div className="p-4">
+          <Profile />
+        </div>
+        <div className="grid overflow-auto grid-cols-4 grid-rows-8 rounded-t-3xl shadow-[0_-1px_5px_0px_rgba(0,0,0,0.25)] h-[92.5%]">
+          <div className="bg-[#F3FAFE] box row-span-2 rounded-tl-3xl ">
+            <div className="flex justify-between items-center p-4 ">
+              <p className="text-lg underline underline-offset-4">CONTACTS</p>
+              <button
+                className="text-md bg-blue-100/50 hover:bg-blue-100 p-[3px] rounded-full"
+                onClick={() => setIsShown(true)}
+              >
+                ➕
+              </button>
+            </div>
+            <div>
+              <Friends />
+            </div>
           </div>
-          <div className="grid overflow-hidden grid-cols-4 grid-rows-8 rounded-t-3xl shadow-[0_-1px_5px_2px_rgba(0,0,0,0.25)] border-red-800">
-            <div className="box row-span-2 rounded-tl-3xl ">
-              <div className="flex justify-between items-center p-4 ">
-                <p>contacts</p>
-                <button onClick={() => setIsShown(true)}>➕</button>
-              </div>
-              <div className="">
-                <Friends />
-              </div>
-            </div>
-            <div className="box row-span-2 col-span-3 ">
-              <Messages />
-            </div>
+          <div className="box row-span-2 col-span-3 ">
+            <Messages />
           </div>
         </div>
       </div>

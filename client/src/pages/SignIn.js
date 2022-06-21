@@ -1,4 +1,5 @@
 import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 import { user } from "../useGun";
@@ -14,10 +15,10 @@ export default function SignIn() {
     await user.auth(username, password, async (ack) => {
       // not error
       if (!ack.err) {
-        console.log(ack)
-        console.log(await user.is)
         navigate("/");
         window.location.reload();
+      } else {
+        toast.error(ack.err, {id: 'error'});
       }
     });
   }
@@ -53,7 +54,10 @@ export default function SignIn() {
           <p className="mt-8">
             don't have an accout?
             <Link to="/register">
-              <span className="text-blue-500 hover:text-blue-800"> create account </span>
+              <span className="text-blue-500 hover:text-blue-800">
+                {" "}
+                create account{" "}
+              </span>
             </Link>
           </p>
           <p>or</p>
@@ -64,6 +68,7 @@ export default function SignIn() {
           </p>
         </div>
       </div>
+      <Toaster />
     </>
   );
 }

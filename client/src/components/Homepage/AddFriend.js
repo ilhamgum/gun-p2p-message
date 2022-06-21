@@ -1,5 +1,6 @@
 import React from "react";
 import { gun, user } from "../../useGun";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AddFriend() {
   const [input, setInput] = React.useState("");
@@ -24,42 +25,46 @@ export default function AddFriend() {
     if (existInUserList === true) {
       // user input their pub key itself
       if (pub === `~${user.is.pub}`) {
-        console.log("gabisa add akun sendiri");
+        toast.error("can't add yourself to the list");
         setInput("");
       }
       // input already in friend list
       else if (existInFriendList === true) {
-        console.log("sudah berteman");
+        toast.error("already in your friend list");
         setInput("");
       }
       // user exist in userlist and can be add to friend list
       else {
-        console.log("ada");
         user.get("friends").set(pub);
+        toast.success("added as friend, let's holla at them! 💫", {
+          duration: 3000,
+        });
         setInput("");
       }
     }
     // input not match with any pub in userlist
     else {
-      console.log("ga ada");
+      toast.error("user not exist");
       setInput("");
     }
   }
   return (
     <div className="w-full">
       <input
+        className="w-80 rounded-full text-center"
         type="text"
         onChange={(e) => setInput(e.target.value)}
         value={input}
         placeholder="Enter pubkey"
       />
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ml-4"
         type="button"
         onClick={addFriend}
       >
         add
       </button>
+      <Toaster />
     </div>
   );
 }
