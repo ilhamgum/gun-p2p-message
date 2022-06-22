@@ -9,28 +9,26 @@ export default function Homepage() {
   const [isShown, setIsShown] = React.useState(false);
   return (
     <>
-      <div className="w-screen h-screen">
-        <div className="p-4">
+      <div className="grid grid-rows-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-cols-4 w-screen h-screen overflow-hidden">
+        <div className="row-span-1 col-span-4 p-4">
           <Profile />
         </div>
-        <div className="grid overflow-auto grid-cols-4 grid-rows-8 rounded-t-3xl shadow-[0_-1px_5px_0px_rgba(0,0,0,0.25)] h-[92.5%]">
-          <div className="bg-[#F3FAFE] box row-span-2 rounded-tl-3xl ">
-            <div className="flex justify-between items-center p-4 ">
-              <p className="text-lg underline underline-offset-4">CONTACTS</p>
-              <button
-                className="text-md bg-blue-100/50 hover:bg-blue-100 p-[3px] rounded-full"
-                onClick={() => setIsShown(true)}
-              >
-                ➕
-              </button>
-            </div>
-            <div>
-              <Friends />
-            </div>
+        <div className="row-[span_11] col-span-1 bg-[#F3FAFE] rounded-tl-3xl shadow-[0_-1px_5px_0px_rgba(0,0,0,0.25)] ">
+          <div className="flex justify-between items-center p-4 ">
+            <p className="text-lg underline underline-offset-4">CONTACTS</p>
+            <button
+              className="text-md bg-blue-100/50 hover:bg-blue-100 p-[3px] rounded-full"
+              onClick={() => setIsShown(true)}
+            >
+              ➕
+            </button>
           </div>
-          <div className="box row-span-2 col-span-3 ">
-            <Messages />
+          <div>
+            <Friends />
           </div>
+        </div>
+        <div className="row-[span_11] col-span-3 bg-[#FFF] rounded-tr-3xl shadow-[0_-1px_5px_0px_rgba(0,0,0,0.25)]">
+          <Messages />
         </div>
       </div>
       {isShown ? (
