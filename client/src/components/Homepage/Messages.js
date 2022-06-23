@@ -1,17 +1,18 @@
-import { SEA } from "gun";
 import React from "react";
-import { GUN, gun, user } from "../../useGun";
+import { GUN, SEA, gun, user } from "../../useGun";
 import toast, { Toaster } from "react-hot-toast";
 
 import Context from "../../contexts/context";
 
 export default function Messages() {
   const [messages, setMessages] = React.useState([]);
-  // messaging state
   const [newMessage, setNewMessage] = React.useState("");
-
   const { selected } = React.useContext(Context);
-  const id = React.useId();
+
+  const scrollToBottom = () => {
+    const e = document.getElementById("scrollBottomAnchor");
+    setTimeout(() => e.scrollIntoView({ behavior: "smooth" }), 50);
+  };
 
   // send message func
   const sendMessage = async () => {
@@ -24,6 +25,7 @@ export default function Messages() {
       const index = new Date().toISOString();
       gun.get("chat").get(index).put(message);
       setNewMessage("");
+      scrollToBottom();
     }
   };
 
@@ -65,8 +67,9 @@ export default function Messages() {
   return (
     <>
       {selected.pub ? (
-        <div className="grid grid-cols-1 grid-rows-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full h-full overflow-hidden">
-          <div className="head box flex justify-between items-center py-2 px-4 shadow-[0_1px_5px_0px_rgba(0,0,0,0.25)]">
+        <div className="container grid grid-cols-1 grid-rows-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full h-full overflow-hidden"> 
+          {/* head profile */}
+          <div className="flex justify-between items-center py-2 px-4 shadow-[0_1px_5px_0px_rgba(0,0,0,0.25)]">
             <div className="flex items-center space-x-4">
               <img
                 className="inline-block h-10 w-10 rounded-full ring-2 ring-black"
@@ -88,12 +91,16 @@ export default function Messages() {
               🔑
             </button>
           </div>
-          <div className="messages box row-[span_10] overflow-y-auto scrollbar p-4">
+          {/* messages box */}
+          <div className="row-[span_10] overflow-y-auto scrollbar p-4">
             {messages.map((e) => {
-              console.log(e);
+              scrollToBottom();
               if (e.from === user.is.pub) {
                 return (
-                  <div className="flex justify-end space-x-2 my-2" key={id}>
+                  <div
+                    className="flex justify-end space-x-2 my-2"
+                    key={e.pub}
+                  >
                     <p className="self-end text-xs opacity-50">
                       {new Date(e.when).toLocaleString().slice(0)}
                     </p>
@@ -104,7 +111,7 @@ export default function Messages() {
                 );
               } else {
                 return (
-                  <div className="flex space-x-2 my-2" key={id}>
+                  <div className="flex space-x-2 my-2" key={e.pub}>
                     <div className="bg-[#476CF0] w-fit rounded-t-lg rounded-r-lg px-2 py-1">
                       <p className="text-white select-all">{e.what}</p>
                     </div>
@@ -115,8 +122,10 @@ export default function Messages() {
                 );
               }
             })}
+            <div id="scrollBottomAnchor" />
           </div>
-          <div className="input box place-self-center w-full ">
+          {/* input box */}
+          <div className="place-self-center w-full ">
             <input
               className="w-[90%] rounded-full pl-4 mx-2 "
               type="text"
