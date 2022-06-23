@@ -42,7 +42,10 @@ export default function Friends() {
               src={`https://avatars.dicebear.com/api/avataaars/${e.alias}.svg`}
               alt=""
             />
-            <p className="text-black text-xl">{e.alias}</p>
+            <div>
+              <p className="text-black text-2xl">{e.alias}</p>
+              <p className="text-black">................................</p>
+            </div>
           </div>
         </div>
       ))}
