@@ -14,11 +14,18 @@ export default function Messages() {
     setTimeout(() => e.scrollIntoView({ behavior: "smooth" }), 50);
   };
 
+  const onEnter = (e) => {
+    if (e.key === "Enter" && newMessage !== "") {
+      sendMessage();
+    }
+  };
+
   // send message func
   const sendMessage = async () => {
     if (newMessage !== "") {
+      const key = await SEA.secret(selected.epub, user._.sea); // key for e2ee
       const message = {
-        what: await SEA.encrypt(newMessage, "#foo"),
+        what: await SEA.encrypt(newMessage, key),
         from: await user.is.pub,
         to: selected.pub,
       };
@@ -26,12 +33,6 @@ export default function Messages() {
       gun.get("chat").get(index).put(message);
       setNewMessage("");
       scrollToBottom();
-    }
-  };
-
-  const onEnter = (e) => {
-    if (e.key === "Enter" && newMessage !== "") {
-      sendMessage();
     }
   };
 
@@ -44,16 +45,15 @@ export default function Messages() {
       .map()
       .once(async (data) => {
         if (data) {
-          const key = "#foo"; // Key for end-to-end encryption
-          const message = {
-            what: (await SEA.decrypt(data.what, key)) + "",
-            when: GUN.state.is(data, "what"),
-            from: data.from,
-            to: data.to,
-          };
-
           const userPub = [user.is.pub, selected.pub];
           if (userPub.includes(data.from && data.to)) {
+            const key = await SEA.secret(selected.epub, user._.sea); // key for e2ee
+            const message = {
+              what: (await SEA.decrypt(data.what, key)) + "",
+              when: GUN.state.is(data, "what"),
+              from: data.from,
+              to: data.to,
+            };
             setMessages((old) => [...old, message]);
           }
         }
@@ -67,7 +67,7 @@ export default function Messages() {
   return (
     <>
       {selected.pub ? (
-        <div className="container grid grid-cols-1 grid-rows-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full h-full overflow-hidden"> 
+        <div className="container grid grid-cols-1 grid-rows-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full h-full overflow-hidden">
           {/* head profile */}
           <div className="flex justify-between items-center py-2 px-4 shadow-[0_1px_5px_0px_rgba(0,0,0,0.25)]">
             <div className="flex items-center space-x-4">
@@ -97,10 +97,7 @@ export default function Messages() {
               scrollToBottom();
               if (e.from === user.is.pub) {
                 return (
-                  <div
-                    className="flex justify-end space-x-2 my-2"
-                    key={e.pub}
-                  >
+                  <div className="flex justify-end space-x-2 my-2" key={e.when}>
                     <p className="self-end text-xs opacity-50">
                       {new Date(e.when).toLocaleString().slice(0)}
                     </p>
