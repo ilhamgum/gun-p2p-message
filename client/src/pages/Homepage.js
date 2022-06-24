@@ -4,6 +4,7 @@ import Friends from "../components/Homepage/Friends";
 import Profile from "../components/Homepage/Profile";
 import AddFriend from "../components/Homepage/AddFriend";
 import Messages from "../components/Homepage/Messages";
+import Stranger from "../components/Homepage/Stranger";
 
 export default function Homepage() {
   const [isShown, setIsShown] = React.useState(false);
@@ -23,8 +24,14 @@ export default function Homepage() {
               ➕
             </button>
           </div>
-          <div>
+          <div className="h-[44%] w-full">
             <Friends />
+          </div>
+          <div className="flex justify-between items-center p-4">
+            <p className="text-lg underline underline-offset-4">STRANGERS</p>
+          </div>
+          <div className="h-[44%] w-full">
+            <Stranger />
           </div>
         </div>
         <div className="row-[span_11] col-span-3 bg-[#FFF] rounded-tr-3xl shadow-[0_-1px_5px_0px_rgba(0,0,0,0.25)]">
