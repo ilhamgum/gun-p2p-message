@@ -35,7 +35,7 @@ export default function Messages() {
       .once(async (data) => {
         if (data) {
           const userPub = [user.is.pub, selected.pub];
-          if (userPub.includes(data.from && data.to)) {
+          if (userPub.includes(data.from) && userPub.includes(data.to)) {
             // const key = await SEA.secret(selected.epub, user._.sea); // key for e2ee
             const message = {
               what: (await SEA.decrypt(data.what, "foo")) + "",

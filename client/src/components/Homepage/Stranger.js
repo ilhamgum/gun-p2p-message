@@ -3,81 +3,57 @@ import { gun, user } from "../../useGun";
 
 export default function Stranger() {
   const [stranger, setStranger] = React.useState([]);
-  const [val, setVal] = React.useState([]);
 
   React.useEffect(() => {
     // get incoming message that's not from friends
     const getIncomingMessages = async () => {
-      if ((await user.get("friends")) === undefined) {
-        gun
-          .get("chat")
-          .map()
-          .once(async (data) => {
-            if (data.to === (await user.is.pub)) {
-              console.log("masuk");
-              setStranger((old) => [...old, data.from]);
-              if (stranger.includes(data.from)) {
-                console.log("udah ada");
-              } else {
-                console.log("ga ada");
+      const temp = [];
+      const friends = [];
+      // run if friends node not exist
+      !(await user.get("friends"))
+        ? gun
+            .get("chat")
+            .map()
+            .once(async (data) => {
+              if (data.to === (await user.is.pub)) {
+                if (!temp.includes(data.from)) {
+                  temp.push(data.from);
+                  setStranger(temp);
+                }
               }
-            }
-          });
-      } else {
-      }
-      // setStranger([]);
-      // iterate chat graph
-      // gun
-      //   .get("chat")
-      //   .map()
-      //   .once(async (data) => {
-      //     if (data.to === (await user.is.pub)) {
-      //       console.log("masuk");
-      //       if (!(await user.get("friends"))) {
-      //         console.log("undf friend, ada ga?", stranger.includes(data.from));
-      //         if (stranger.includes(data.from)) {
-      //           console.log("udah ada");
-      //         } else {
-      //           setStranger((old) => [...old, data.from]);
-      //         }
-      //       } else {
-      //         console.log("not undf");
-      //       }
-      //       //   await user
-      //       //     .get("friends")
-      //       //     .map()
-      //       //     .once(async (e) => {
-      //       //       console.log(e);
-      //       //       if (data.to === e.slice(1)) {
-      //       //         console.log("sama get from: ", data.from);
-      //       //         if (!data.from === (await user.is.pub)) {
-      //       //           console.log("dari orang");
-      //       //           if (stranger.includes(data.from)) {
-      //       //             console.log("ga ada di list ", stranger);
-      //       //           } else {
-      //       //             console.log("ada di list ", stranger);
-      //       //           }
-      //       //         } else {
-      //       //           console.log("diri sendiri XX", data.from === user.is.pub);
-      //       //         }
-      //       //       } else {
-      //       //         console.log("ini apaan");
-      //       //       }
-      //       //     });
-      //       // }
-      //     }
-      //   });
+            })
+        : await user
+            .get("friends")
+            .map()
+            .once(async (e) => {
+              friends.push(e.slice(1));
+              console.log(friends);
+              gun
+                .get("chat")
+                .map()
+                .once(async (data) => {
+                  if (data.to === (await user.is.pub)) {
+                    if (
+                      !temp.includes(data.from) &&
+                      !friends.includes(data.from)
+                    ) {
+                      temp.push(data.from);
+                      setStranger(temp);
+                    }
+                  }
+                });
+            });
     };
     getIncomingMessages();
   }, []);
 
   return (
-    <div className="flex flex-col divide-y max-h-full overflow-y-auto scrollbar">
+    <div className="flex flex-col divide-y max-h-full overflow-y-auto overflow-x-hidden scrollbar">
       {stranger.map((e) => {
         return (
           <div
             className="hover:bg-blue-100/50 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
-            key={e.pub}
+            key={Math.random()}
             onClick={() => {
               console.log(e);
             }}
@@ -107,11 +83,58 @@ export default function Stranger() {
 //   if (!stranger.includes(who)) setStranger((old) => [...old, who]);
 // }
 
-//       if (data.to === e.slice(1) || !data.from === await user.is.pub) {
-//         console.log("dont", data.from, '||',e.slice(1));
-//       } else {
-//         console.log("do", data.from, e.slice(1));
-//         if (!stranger.includes(data.from)) {
+// if (data.to === e.slice(1) || !data.from === (await user.is.pub)) {
+//   console.log("dont", data.from, "||", e.slice(1));
+// } else {
+//   console.log("do", data.from, e.slice(1));
+//   if (!stranger.includes(data.from)) {
+//     setStranger((old) => [...old, data.from]);
+//   }
+// }
+
+// setStranger([]);
+// iterate chat graph
+// gun
+//   .get("chat")
+//   .map()
+//   .once(async (data) => {
+//     if (data.to === (await user.is.pub)) {
+//       console.log("masuk");
+//       if (!(await user.get("friends"))) {
+//         console.log("undf friend, ada ga?", stranger.includes(data.from));
+//         if (stranger.includes(data.from)) {
+//           console.log("udah ada");
+//         } else {
 //           setStranger((old) => [...old, data.from]);
 //         }
+//       } else {
+//         console.log("not undf");
 //       }
+//   await user
+//     .get("friends")
+//     .map()
+//     .once(async (e) => {
+//       console.log(e);
+//       if (data.to === e.slice(1)) {
+//         console.log("sama get from: ", data.from);
+//         if (!data.from === (await user.is.pub)) {
+//           console.log("dari orang");
+//           if (stranger.includes(data.from)) {
+//             console.log("ga ada di list ", stranger);
+//           } else {
+//             console.log("ada di list ", stranger);
+//           }
+//         } else {
+//           console.log("diri sendiri XX", data.from === user.is.pub);
+//         }
+//       } else {
+//         console.log("ini apaan");
+//       }
+//     });
+// }
+//     }
+//   });
+
+// iterate friends
+// filter data that not in temp & friend list
+// push
