@@ -33,10 +33,14 @@ export default function Stranger() {
       }
       // user exist in userlist and can be add to friend list
       else {
-        user.get("friends").set(pub);
-        toast.success("added as friend, let's holla at them! 💫, page will reload", {
-          duration: 3000,
-        });
+        user.get("friends").set(pub, (ack) => console.log(ack));
+        toast.success(
+          "added as friend, let's holla at them! 💫, page will reload",
+          {
+            duration: 3000,
+          }
+        );
+        setTimeout(() => window.location.reload(), 1000);
       }
     }
     // input not match with any pub in userlist
@@ -96,7 +100,6 @@ export default function Stranger() {
             key={Math.random()}
             onClick={() => {
               addFriend(e);
-              setTimeout(() => window.location.reload(), 1000)
             }}
           >
             <div className="flex items-center">
