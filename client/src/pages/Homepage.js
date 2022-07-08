@@ -24,13 +24,13 @@ export default function Homepage() {
               ➕
             </button>
           </div>
-          <div className="h-[44%] w-full">
+          <div className="h-auto max-h-[45%] w-full overflow-y-auto scrollbar">
             <Friends />
           </div>
           <div className="flex justify-between items-center p-4">
             <p className="text-lg underline underline-offset-4">STRANGERS</p>
           </div>
-          <div className="h-[44%] w-full">
+          <div className="h-auto max-h-[45%] w-full overflow-y-auto scrollbar">
             <Stranger />
           </div>
         </div>
