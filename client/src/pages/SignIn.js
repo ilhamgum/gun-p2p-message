@@ -10,15 +10,24 @@ export default function SignIn() {
   const [password, setPassword] = React.useState("");
 
   const navigate = useNavigate();
+  
+  React.useEffect(() => {
+    async function isLogin() {
+      if (await user.is) {
+        navigate("/", { replace: true });
+      }
+    }
+    isLogin()
+  });
 
   async function login() {
     await user.auth(username, password, async (ack) => {
       // not error
       if (!ack.err) {
-        navigate("/");
+        navigate("/", { replace: true });
         window.location.reload();
       } else {
-        toast.error(ack.err, {id: 'error'});
+        toast.error(ack.err, { id: "error" });
       }
     });
   }

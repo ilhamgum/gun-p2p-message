@@ -9,6 +9,15 @@ export default function SignUp() {
   const [password, setPassword] = React.useState("");
 
   const navigate = useNavigate();
+  
+  React.useEffect(() => {
+    async function isLogin() {
+      if (await user.is) {
+        navigate("/", { replace: true });
+      }
+    }
+    isLogin()
+  });
 
   async function register() {
     await user.create(username, password, async (ack) => {
