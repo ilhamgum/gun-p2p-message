@@ -8,6 +8,7 @@
     "gun": "^0.2020.1237",
     "lodash": "^4.17.21",
     "react-hot-toast": "^2.2.0",
+    "react-icons": "^4.4.0",
     "react-router-dom": "6"
   },
   "scripts": {
