@@ -46,7 +46,7 @@ export default function Messages() {
 
   // send message func
   const sendMessage = async () => {
-    if (newMessage !== "") {
+    if (newMessage !== "" || newImage !== "") {
       const message = {
         what: await SEA.encrypt(newMessage, "foo"),
         img: await SEA.encrypt(newImage, "foo"),
