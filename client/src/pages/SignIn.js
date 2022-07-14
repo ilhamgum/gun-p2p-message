@@ -1,8 +1,7 @@
 import React from "react";
+import { user } from "../useGun";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-
-import { user } from "../useGun";
 
 export default function SignIn() {
   // states
@@ -10,19 +9,16 @@ export default function SignIn() {
   const [password, setPassword] = React.useState("");
 
   const navigate = useNavigate();
-  
+
   React.useEffect(() => {
     async function isLogin() {
-      if (await user.is) {
-        navigate("/", { replace: true });
-      }
+      if (await user.is) navigate("/");
     }
-    isLogin()
+    isLogin();
   });
 
   async function login() {
     await user.auth(username, password, async (ack) => {
-      // not error
       if (!ack.err) {
         navigate("/", { replace: true });
         window.location.reload();

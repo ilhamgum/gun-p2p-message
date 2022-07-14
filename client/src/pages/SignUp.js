@@ -1,7 +1,7 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { gun, user } from "../useGun";
 import toast, { Toaster } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   // states
@@ -9,12 +9,10 @@ export default function SignUp() {
   const [password, setPassword] = React.useState("");
 
   const navigate = useNavigate();
-  
+
   React.useEffect(() => {
     async function isLogin() {
-      if (await user.is) {
-        navigate("/", { replace: true });
-      }
+      if (await user.is) navigate("/");
     }
     isLogin()
   });
@@ -39,7 +37,15 @@ export default function SignUp() {
           toast.error("user already exist in graph");
         } else {
           gun.get("userlist").set(setData);
-          navigate("/login");
+          await user.auth(username, password, async (ack) => {
+            // not error
+            if (!ack.err) {
+              navigate("/", { replace: true });
+              window.location.reload();
+            } else {
+              toast.error(ack.err, { id: "error" });
+            }
+          });
         }
       } else if (ack.err) {
         toast.error(ack.err);
