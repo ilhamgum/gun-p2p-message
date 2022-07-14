@@ -47,9 +47,10 @@ export default function Messages() {
   // send message func
   const sendMessage = async () => {
     if (newMessage !== "" || newImage !== "") {
+      let key = await SEA.secret(selected.epub, user._.sea);
       const message = {
-        what: await SEA.encrypt(newMessage, "foo"),
-        img: await SEA.encrypt(newImage, "foo"),
+        what: await SEA.encrypt(newMessage, key),
+        img: await SEA.encrypt(newImage, key),
         from: await user.is.pub,
         to: selected.pub,
       };
@@ -73,10 +74,10 @@ export default function Messages() {
         if (data) {
           const userPub = [user.is.pub, selected.pub];
           if (userPub.includes(data.from) && userPub.includes(data.to)) {
-            // const key = await SEA.secret(selected.epub, user._.sea); // key for e2ee
+            let key = await SEA.secret(selected.epub, user._.sea);
             const message = {
-              what: await SEA.decrypt(data.what, "foo"),
-              img: await SEA.decrypt(data.img, "foo"),
+              what: await SEA.decrypt(data.what, key),
+              img: await SEA.decrypt(data.img, key),
               when: GUN.state.is(data, "what"),
               from: data.from,
               to: data.to,
