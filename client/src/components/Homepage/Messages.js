@@ -75,6 +75,20 @@ export default function Messages() {
           const userPub = [user.is.pub, selected.pub];
           if (userPub.includes(data.from) && userPub.includes(data.to)) {
             let key = await SEA.secret(selected.epub, user._.sea);
+            console.log({
+              what: data.what,
+              img: data.img,
+              when: GUN.state.is(data, "what"),
+              from: data.from,
+              to: data.to,
+            });
+            console.log({
+              what: await SEA.decrypt(data.what, key),
+              img: await SEA.decrypt(data.img, key),
+              when: GUN.state.is(data, "what"),
+              from: data.from,
+              to: data.to,
+            });
             const message = {
               what: await SEA.decrypt(data.what, key),
               img: await SEA.decrypt(data.img, key),

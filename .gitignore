@@ -47,6 +47,7 @@ build/Release
 node_modules
 jspm_packages/
 radata
+%radata%
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -144,5 +145,6 @@ dist
 .svelte-kit
 
 note
+radata*
 
 # End of https://www.toptal.com/developers/gitignore/api/node
